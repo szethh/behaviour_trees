@@ -1,4 +1,4 @@
-from tree import Selector, Sequence, Status, While, Repeat, Not, Random
+from behaviour_tree.tree import Selector, Sequence, Status, While, Repeat, Not, Random
 
 
 def mock_status(status):

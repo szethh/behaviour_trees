@@ -4,9 +4,12 @@ import random
 
 
 class Status(Enum):
-    SUCCESS = 0
-    FAILURE = 1
+    FAILURE = 0
+    SUCCESS = 1
     RUNNING = 2
+
+    def __bool__(self):
+        return self != Status.FAILURE
 
 
 class Tree(ABC):
@@ -85,7 +88,7 @@ class While(Tree):
 class Not(Tree):
     def run(self):
         result, status = self.tasks[0]()
-        return result, Status(not bool(status.value))
+        return result, Status(not bool(status))
 
 
 class Random(Tree):

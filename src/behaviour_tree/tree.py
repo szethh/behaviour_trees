@@ -18,20 +18,40 @@ class Tree(ABC):
     def __init__(self, tasks, name=""):
         self.tasks = tasks
         self.__name__ = name
+        self.results = []
 
     def __call__(self):
         return self.run()
 
+    def __str__(self):
+        return f'{self.__class__.__name__} {self.__name__}'
+
+    def result_names(self):
+        return [r.__name__ for r in self.results]
+
     def run(self):
-        results = []
+        self.results = []
         for task in self.tasks:
             result, status = self.run_task(task)
-            results.append(result)
+            self.results.append(result)
 
             if status != self.END_STATUS:
-                return results, status
+                return self.results, status
 
-        return results, self.END_STATUS
+        return self.results, self.END_STATUS
+
+    def get_first_task(self, status=None, reverse=False):
+        if status is None:
+            status = self.END_STATUS or Status.SUCCESS
+        rn = range(len(self.results)-1, -1, -1) if reverse else range(len(self.results))
+        for i in rn:
+            if isinstance(self.tasks[i], Tree):
+                s = self.tasks[i].get_first_task(status, reverse)
+                if s:
+                    return s
+            else:
+                if self.results[i] == status:
+                    return self.tasks[i]
 
     @staticmethod
     def run_task(task):

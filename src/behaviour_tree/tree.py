@@ -9,7 +9,7 @@ class Status(Enum):
     RUNNING = 2
 
     def __bool__(self):
-        return self == Status.SUCCESS
+        return bool(self.value)
 
 
 class Tree(ABC):

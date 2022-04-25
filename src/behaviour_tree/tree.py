@@ -107,7 +107,7 @@ class While(Tree):
 
 class Not(Tree):
     def run(self):
-        result, status = self.tasks[0]()
+        result, status = self.run_task(self.tasks[0])
         return result, Status(not bool(status))
 
 
@@ -118,4 +118,4 @@ class Random(Tree):
 
     def run(self):
         t = random.choices(self.tasks, weights=self.weights)[0]
-        return t()
+        return self.run_task(t)

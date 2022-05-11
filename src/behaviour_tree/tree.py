@@ -15,8 +15,8 @@ class Status(Enum):
 class Tree(ABC):
     END_STATUS = None
 
-    def __init__(self, tasks, name=""):
-        self.tasks = tasks
+    def __init__(self, *args, name=""):
+        self.tasks = list(args)
         self.__name__ = name
         self.results = []
 
@@ -76,8 +76,8 @@ class Selector(Tree):
 
 
 class Repeat(Tree):
-    def __init__(self, tasks, n, name=""):
-        super().__init__(tasks, name)
+    def __init__(self, *args, n=1, name=""):
+        super().__init__(*args, name=name)
         self.n = n
 
     def run(self):
@@ -91,8 +91,8 @@ class Repeat(Tree):
 
 
 class While(Tree):
-    def __init__(self, tasks, condition, name=""):
-        super().__init__(tasks, name)
+    def __init__(self, *args, condition, name=""):
+        super().__init__(*args, name=name)
         self.condition = condition
 
     def run(self):
@@ -112,8 +112,8 @@ class Not(Tree):
 
 
 class Random(Tree):
-    def __init__(self, tasks, name="", weights=None):
-        super().__init__(tasks, name)
+    def __init__(self, *args, name="", weights=None):
+        super().__init__(*args, name=name)
         self.weights = weights
 
     def run(self):
